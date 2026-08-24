@@ -1,0 +1,651 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background-color: #000;
+    color: #2c2c2c;
+    overflow: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* SECTION 1: Video Gate */
+#video-gate-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: #000;
+    cursor: pointer;
+    pointer-events: auto !important;
+}
+
+#gate-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* SECTION 2: First Page */
+#main-content {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.card-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2); /* خامة خفيفة تبين الفيديو */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Typography & Layout */
+.names {
+    font-size: 2.5rem;
+    font-style: italic;
+    margin: 5px 0;
+}
+
+.ampersand {
+    font-size: 1.8rem;
+    margin: 5px 0;
+}
+
+.forever-text {
+    font-size: 2rem;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.subtitle-top, .invitation-text, .tagline {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin: 8px 0;
+}
+
+.diamond-divider {
+    margin: 10px 0;
+    font-size: 0.8rem;
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.date-container .line {
+    width: 30px;
+    height: 1px;
+    background-color: #2c2c2c;
+}
+
+/* Typewriter Cursor */
+.typewriter-text {
+    min-height: 1.2em;
+    display: inline-block;
+}
+
+.typewriter-text::after {
+    content: '|';
+    opacity: 1;
+    animation: blink 0.7s infinite;
+}
+
+.typewriter-text.finished::after {
+    display: none;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+
+
+
+
+/* section 3 */
+
+/* Smooth Scrolling for the whole page */
+html {
+    scroll-behavior: smooth;
+}
+
+#main-content {
+    height: auto !important; /* Yesmakh bel-scroll */
+    overflow-y: auto;
+}
+
+/* SECTION 3: Countdown Section Styling */
+.countdown-section {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(245, 240, 230, 0.85), rgba(225, 215, 198, 0.9)), 
+                url('../assets/bg-pillars.jpg') center/cover no-repeat fixed;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.countdown-overlay {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 40px 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.countdown-title {
+    font-family: 'Georgia', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: #3a322c;
+    letter-spacing: 1px;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 30px 0;
+}
+
+.time-box {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(212, 187, 152, 0.5);
+    border-radius: 12px;
+    padding: 12px 10px;
+    min-width: 65px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.time-number {
+    display: block;
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4a3e35;
+}
+
+.time-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: #7a6e65;
+    margin-top: 4px;
+    display: block;
+}
+
+.time-separator {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6b5c50;
+}
+
+.countdown-subtitle {
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    color: #5c4e43;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+/* SECTION 4: Quran & Welcome Styling */
+.quran-section {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Put your background image here */
+    background: url('./photo1.png') center/cover no-repeat fixed;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.quran-card {
+    background: rgba(255, 255, 255, 0.88); /* White rounded card like screenshot */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 45px 30px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    direction: rtl; /* Right to Left for Arabic */
+}
+
+.quran-text {
+    font-family: 'Amiri', serif;
+    font-size: 1.35rem;
+    line-height: 2.2;
+    color: #2b231d;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.arabic-divider {
+    color: #a3825e;
+    font-size: 0.9rem;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.welcome-message {
+    font-family: 'Amiri', serif;
+    font-size: 1.1rem;
+    line-height: 2;
+    color: #4a3e35;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+
+
+
+/* SECTION 5: Location Styling */
+.location-section {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(245, 240, 230, 0.9), rgba(225, 215, 198, 0.95)),
+                url('../assets/bg-pillars.jpg') center/cover no-repeat fixed;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.location-card {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px dashed #c2a682; /* Warm Gold Dashed Border */
+    border-radius: 28px;
+    padding: 35px 25px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.location-title {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    font-style: italic;
+    color: #4a3e35;
+    margin-bottom: 5px;
+}
+
+.dots-divider {
+    color: #d4bb98;
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+}
+
+.venue-image-container {
+    width: 100%;
+    height: 180px;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.venue-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hall-name {
+    font-family: 'Georgia', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #3a322c;
+    margin-bottom: 4px;
+}
+
+.hotel-name {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #6b5c50;
+    margin-bottom: 6px;
+}
+
+.city-name {
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    color: #8c7e72;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+/* Button Styling Matched with Theme */
+.location-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #a3825e, #8c6a46);
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 12px 32px;
+    border-radius: 30px;
+    box-shadow: 0 6px 18px rgba(163, 130, 94, 0.35);
+    transition: all 0.3s ease;
+}
+
+.location-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(163, 130, 94, 0.5);
+    background: linear-gradient(135deg, #8c6a46, #735332);
+}
+
+.heart-icon {
+    margin-left: 5px;
+    color: #f7e3d0;
+}
+
+/* SECTION 6: Closing Section Styling */
+.closing-section {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(245, 240, 230, 0.9), rgba(225, 215, 198, 0.95)),
+                url('../assets/bg-pillars.jpg') center/cover no-repeat fixed;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Container for Frame */
+.floral-frame-card {
+    position: relative;
+    width: 100%;
+    max-width: 360px; /* الحجم المناسب تماماً */
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('./photo6.png') center/contain no-repeat;
+    box-sizing: border-box;
+}
+
+/* Inner box constrained exactly inside the empty square area */
+.closing-content {
+    position: absolute;
+    width: 58%; /* يحدد العرض الداخلي للمربع فقط */
+    height: 48%; /* يحدد الارتفاع الداخلي للمربع فقط */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #3a322c;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.closing-message {
+    font-family: 'Amiri', serif;
+    font-size: 0.78rem; /* تصغير الخط ليتناسب مع المساحة */
+    line-height: 1.4;
+    color: #4a3e35;
+    direction: rtl;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.gold-divider {
+    color: #c2a682;
+    font-size: 0.65rem;
+    margin: 4px 0;
+}
+
+.closing-names {
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem; /* تصغير الاسماء لعدم الخروج عن الاطار */
+    font-style: italic;
+    color: #2b231d;
+    margin-bottom: 4px;
+    letter-spacing: 0px;
+    white-space: nowrap;
+}
+
+.event-details {
+    font-family: 'Georgia', serif;
+    color: #6b5c50;
+}
+
+.closing-date {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 1px;
+}
+
+.closing-time {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    color: #8c7e72;
+    font-weight: 600;
+}
+
+
+/* بدلاً من height: 100vh */
+.main-wrapper {
+  min-height: 100dvh; /* Dynamic Viewport Height */
+  width: 100%;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+html, body {
+  min-height: 100dvh;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+/* 1. تغيير خلفية الموقع الأساسية للون كريمي/أوف وايت أنيق يناسب الدعوة بدل الأسود */
+html, body {
+    background-color: #fcfbf7 !important; /* لون هادي وفاخر بدل الأسود */
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. إلغاء الخلفيات السوداء من الحاويات والسكشنات */
+#video-gate-container,
+#main-content,
+.card-container,
+section {
+    background-color: transparent !important;
+}
+
+/* 3. لو عايزة بوابة الفيديو الأولى نفسها ما يكونش ليها خلفية سوداء لو الڤيديو اتحمل */
+#video-gate-container {
+    background-color: #fcfbf7 !important;
+}
+/* 1. إعطاء القسم الأول ارتفاع الشاشة بالكامل على الموبايل واللابتوب */
+#main-content {
+    position: relative;
+    width: 100%;
+    min-height: 100dvh; /* dvh بتاخد طول شاشة الموبايل بدقة حتى مع وجود شريط Safari/Chrome */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* 2. تجبير فيديو الخلفية إنه يغطي الشاشة بالكامل بدون ما يمُط أو يسيب فراغ */
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* تغطية الشاشة بالكامل */
+    z-index: 1;
+}
+
+/* 3. ضبط الحاوية اللي جواها النص والكارت */
+.card-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+
+
+/*akher sf7a */
+/* Styling for Closing Section Card */
+.closing-section {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color:   #4a3e35;; /* لون البيج الدافي المطابق للورود */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 25px; /* المسافة العمودية بين كل عنصر والثاني */
+  box-sizing: border-box;
+}
+
+/* 1. الشعار / المونوغرام */
+.monogram-img {
+  width: 170px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* 2. صورة اليدين والخواتم */
+.hands-img {
+  width: 210px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* 3. حاوية الأسماء */
+.names-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.names-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.name-text {
+  
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.name-en {
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+ background-color: #2b2321;
+  opacity: 0.6;
+}
+
+/* 4. المخطوطة الختامية */
+.verse-img {
+  width: 370px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* النص البديل للمخطوطة (في حال تفعيله) */
+.verse-text {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+  font-size: 1.2rem;
+ 
+  line-height: 1.6;
+}
+
+
+
