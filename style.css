@@ -729,3 +729,13 @@ section {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
+
+
+/* طبقيه على الجمل المتقطعة زي .invitation-text و .subtitle-top */
+.invitation-text, .subtitle-top, .typewriter-text {
+    font-family: 'Amiri', 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    -webkit-font-feature-settings: "liga" 1, "calt" 1;
+    font-feature-settings: "liga" 1, "calt" 1;
+}
