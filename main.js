@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isStarted = true;
 
         if (bgMusic) {
+            bgMusic.currentTime = 70;
             bgMusic.play().catch(err => console.log('Audio error:', err));
         }
 
