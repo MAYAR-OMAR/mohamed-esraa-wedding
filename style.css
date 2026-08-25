@@ -739,3 +739,7 @@ section {
     -webkit-font-feature-settings: "liga" 1, "calt" 1;
     font-feature-settings: "liga" 1, "calt" 1;
 }
+html, body {
+    /* يسمح بالـ Scroll السلس على الآيفون */
+    -webkit-overflow-scrolling: touch;
+}

@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
             mainContent.classList.remove('hidden');
         }
 
-        // تفعيل السكرول
+        // فك الـ Overflow للشاشة
+        document.documentElement.style.overflow = 'auto';
         document.body.style.overflow = 'auto';
 
         if (secondVideo) {
@@ -54,37 +55,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // تشغيل انيميشن الكتابة
         startTypewriter();
 
-        // 🚀 بدء السكرول التلقائي بعد 2 ثانية من التفاعل
+        // 🚀 بدء السكرول التلقائي بعد 1.5 ثانية
         setTimeout(() => {
             startAutoScroll();
-        }, 2000);
+        }, 1500);
     }
 
-    // دالة السكرول التلقائي المتوافقة مع الموبايل
     function startAutoScroll() {
-        const scrollSpeed = 1.5; // سرعة الحركة
-        const scrollDelay = 15;  // زمن التحديث
-
+        const scrollSpeed = 2; // سرعة النزول
+        
         const autoScrollInterval = setInterval(() => {
-            // حساب المسافة المتبقية لأسفل الصفحة
-            const maxScroll = Math.max(
-                document.body.scrollHeight, 
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const totalHeight = Math.max(
+                document.body.scrollHeight,
                 document.documentElement.scrollHeight
-            ) - window.innerHeight;
+            );
+            const maxScroll = totalHeight - window.innerHeight;
 
-            if (window.scrollY >= maxScroll - 5) {
+            if (currentScroll >= maxScroll - 10) {
                 clearInterval(autoScrollInterval);
             } else {
-                window.scrollBy(0, scrollSpeed);
+                window.scrollBy({
+                    top: scrollSpeed,
+                    behavior: 'smooth'
+                });
             }
-        }, scrollDelay);
+        }, 30);
 
-        // إضافة مستمعات الإيقاف بعد بدء السكرول فقط لضمان عدم إلغائها بسبب ضغطة البوابة
-        setTimeout(() => {
-            const stopScroll = () => clearInterval(autoScrollInterval);
-            window.addEventListener('touchmove', stopScroll, { once: true });
-            window.addEventListener('wheel', stopScroll, { once: true });
-        }, 500);
+        // إيقاف السكرول عند تفاعل المستخدم بلمس الشاشة أو الماوس
+        const stopScroll = () => clearInterval(autoScrollInterval);
+        window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
+        window.addEventListener('wheel', stopScroll, { passive: true, once: true });
     }
 
     // ربط الضغطة بالبوابة
