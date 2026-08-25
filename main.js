@@ -80,9 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function typeCharacter(element, text, i) {
     if (i <= text.length) {
-        // قطع النص كاملاً حتى الحرف الحالي بيخلي المتصفح يربط الحروف صح
-        element.textContent = text.slice(0, i);
-        setTimeout(() => typeCharacter(element, text, i + 1), 60);
+        element.textContent = text.slice(0, i); // 👈 بياخد النص من الأول لحد الحرف الحالي
+        setTimeout(() => typeCharacter(element, text, i + 1), 50);
     } else {
         element.classList.add('finished');
     }

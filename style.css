@@ -725,3 +725,7 @@ section {
     text-rendering: optimizeLegibility;
     white-space: pre-wrap; /* للحفاظ على المسافات بين الكلمات */
 }
+.typewriter-text {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
