@@ -175,3 +175,30 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+
+const openBtn = document.getElementById('open-gate-btn');
+const gateContainer = document.getElementById('video-gate-container');
+const gateVideo = document.getElementById('gate-video');
+
+openBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    // 1. إخفاء الزرار فوراً أول ما يدوس
+    openBtn.style.display = 'none';
+
+    // 2. تشغيل الفيديو
+    if (gateVideo) {
+        gateVideo.currentTime = 0; // يبدأ من الأول
+        gateVideo.play();
+
+        // 3. لما الفيديو يخلص تماماً، نخفي البوابة ونبدأ السكرول
+        gateVideo.onended = () => {
+            gateContainer.classList.add('hidden');
+
+            if (typeof startAutoScroll === 'function') {
+                startAutoScroll();
+            }
+        };
+    }
+});
