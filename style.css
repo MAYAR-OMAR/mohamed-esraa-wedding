@@ -517,42 +517,66 @@ html, body {
     box-sizing: border-box;
 }
 
+/* 1. جعل الـ html و body يمتدان بدون فواصل */
+html, body {
+    width: 100%;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
+/* 2. حاوية الفيديو الأول (Gate Video) تغطي الشاشة 100% بالكامل */
 #video-gate-container {
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    height: 100dvh; /* مهمة للموبايلات الحديثة */
+    width: 100vw;
+    height: 100dvh;
     z-index: 9999;
-    background-color: #000 !important;
-    cursor: pointer;
-    pointer-events: auto !important;
     overflow: hidden;
 }
 
+/* تغطية الفيديو للشاشة بالكامل كـ Cover */
 #gate-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover !important;
     object-position: center;
+    display: block;
 }
+
+/* 3. الصفحة الأولى بداخل main-content والفيديو الخلفية بتاعها */
 #main-content {
     position: relative;
     width: 100%;
     min-height: 100dvh;
-    height: auto !important;
 }
 
 .bg-video {
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover !important;
+    object-position: center;
     z-index: 1;
+}
+
+/* 4. إجبار السكاشن اللي واخدة صور خلفية إنها تفرش الشاشة وتغطيها كاملة */
+.countdown-section,
+.quran-section,
+.location-section {
+    width: 100%;
+    min-height: 100dvh; /* يضمن ألا يقل الارتفاع عن شاشة الموبايل */
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
