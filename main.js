@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 📌 ربط الكليك والـ Touch على container البوابة (ده اللي كان ناقص بردو)
     if (videoGate) {
         videoGate.addEventListener('click', startGateVideo);
-        videoGate.addEventListener('touchstart', startGateVideo, { passive: true });
+       
     }
 
     function revealMainContent() {
@@ -67,59 +67,58 @@ document.addEventListener('DOMContentLoaded', function() {
         // تشغيل انيميشن الكتابة
         startTypewriter();
 
-        // 🚀 بدء السكرول التلقائي بعد 1.5 ثانية
-        setTimeout(() => {
-            startAutoScroll();
-        }, 1500);
+       setTimeout(() => {
+    requestAnimationFrame(() => {
+        startAutoScroll();
+    });
+}, 500);
     }
 
 function startAutoScroll() {
-    // 1. انتظر لما أنيميشن البوابة يخلص تماماً والشاشة تتفتح
-    setTimeout(() => {
-        let isStopped = false;
+    let isStopped = false;
+    let scrollSpeed = 1.5;
+    let scrollAnimation;
 
-        // دالة السكرول المستمر
-        function step() {
-            if (isStopped) return;
+    function autoScroll() {
+        if (isStopped) return;
 
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            const totalHeight = Math.max(
-                document.body.scrollHeight,
-                document.documentElement.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.offsetHeight
-            );
-            const maxScroll = totalHeight - window.innerHeight;
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const maxScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
 
-            // لو وصل لآخر الصفحة يوقف
-            if (currentScroll >= maxScroll - 10) {
-                isStopped = true;
-                return;
-            }
-
-            // حركة بمقدار 2px مناسبة جداً للموبايل
-            window.scrollBy(0, 2);
-
-            requestAnimationFrame(step);
+        if (scrollTop >= maxScroll - 2) {
+            isStopped = true;
+            return;
         }
 
-        // ابدأ السكرول البرمجي
-        requestAnimationFrame(step);
+        window.scrollTo({
+            top: scrollTop + scrollSpeed,
+            behavior: 'auto'
+        });
 
-        // 2. تجميع كل الأحداث اللي بتوقف السكرول
-        const stopScroll = () => {
-            isStopped = true;
-        };
+        scrollAnimation = requestAnimationFrame(autoScroll);
+    }
 
-        // 3. مهم جداً: استنّى ثانية كاملة بعد ما السكرول يبدأ عشان تفتح مجال للمس القديم يختفي
-        setTimeout(() => {
-            // هنسمع للـ Touch والـ Scroll المباشر فقط بعد حماية 1000ms
-            window.addEventListener('touchstart', stopScroll, { passive: true, once: true });
-            window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
-            window.addEventListener('wheel', stopScroll, { passive: true, once: true });
-        }, 1200);
+    // نبدأ بعد ما الصفحة تظهر فعلاً
+    setTimeout(() => {
+        autoScroll();
+    }, 1000);
 
-    }, 600); // وقت إضافي يضمن إن النقرة الأولى اختفت تماماً
+    // لو المستخدم لمس الشاشة بعد بداية الـauto scroll
+    const stopByTouch = () => {
+        isStopped = true;
+        cancelAnimationFrame(scrollAnimation);
+    };
+
+    window.addEventListener('touchstart', stopByTouch, {
+        passive: true,
+        once: true
+    });
+
+    window.addEventListener('wheel', stopByTouch, {
+        passive: true,
+        once: true
+    });
 }
     // 3. TYPEWRITER LOGIC
     function startTypewriter() {

@@ -518,19 +518,3 @@ html, body {
 }
 
 
-/* إلغاء أي overflow: hidden من الـ html والـ body */
-html, body {
-    width: 100%;
-    min-height: 100dvh;
-    height: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important; /* لضمان تفعيل السكرول على الموبايل */
-}
-
-/* التأكد إن الـ main-content ملوش ارتفاع ثابت */
-#main-content {
-    width: 100%;
-    height: auto !important;
-    min-height: 100dvh;
-    overflow: visible !important;
-}
