@@ -54,29 +54,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // تشغيل انيميشن الكتابة
         startTypewriter();
 
-        // 🚀 بدء السكرول التلقائي بعد 2 ثانية
+        // 🚀 بدء السكرول التلقائي بعد 2 ثانية من التفاعل
         setTimeout(() => {
             startAutoScroll();
         }, 2000);
     }
 
-    // دالة السكرول التلقائي الناعم
+    // دالة السكرول التلقائي المتوافقة مع الموبايل
     function startAutoScroll() {
         const scrollSpeed = 1.5; // سرعة الحركة
-        const scrollDelay = 15;  // زمن التحديث بالمللي ثانية
+        const scrollDelay = 15;  // زمن التحديث
 
         const autoScrollInterval = setInterval(() => {
-            // التوقف عند الوصول لأسفل الصفحة
-            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) {
+            // حساب المسافة المتبقية لأسفل الصفحة
+            const maxScroll = Math.max(
+                document.body.scrollHeight, 
+                document.documentElement.scrollHeight
+            ) - window.innerHeight;
+
+            if (window.scrollY >= maxScroll - 5) {
                 clearInterval(autoScrollInterval);
             } else {
                 window.scrollBy(0, scrollSpeed);
             }
         }, scrollDelay);
 
-        // إلغاء السكرول التلقائي فور تفاعل المستخدم برمس أو بالماوس
-        window.addEventListener('wheel', () => clearInterval(autoScrollInterval), { once: true });
-        window.addEventListener('touchstart', () => clearInterval(autoScrollInterval), { once: true });
+        // إضافة مستمعات الإيقاف بعد بدء السكرول فقط لضمان عدم إلغائها بسبب ضغطة البوابة
+        setTimeout(() => {
+            const stopScroll = () => clearInterval(autoScrollInterval);
+            window.addEventListener('touchmove', stopScroll, { once: true });
+            window.addEventListener('wheel', stopScroll, { once: true });
+        }, 500);
     }
 
     // ربط الضغطة بالبوابة
