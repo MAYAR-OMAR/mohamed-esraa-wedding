@@ -20,10 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (gateVideo) {
-            gateVideo.play().catch(err => {
-                console.log('Gate video play error:', err);
-                revealMainContent();
-            });
+            let playPromise = gateVideo.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // الفيديو شغال تمام
+                }).catch(err => {
+                    console.log('Gate video blocked, skipping directly:', err);
+                    revealMainContent();
+                });
+            }
         } else {
             revealMainContent();
         }
@@ -32,6 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. لما الفيديو الأول يخلص تماماً -> افتح الصفحة الرئيسية
     if (gateVideo) {
         gateVideo.addEventListener('ended', revealMainContent);
+    }
+
+    // 📌 ربط الكليك والـ Touch على container البوابة (ده اللي كان ناقص بردو)
+    if (videoGate) {
+        videoGate.addEventListener('click', startGateVideo);
+        videoGate.addEventListener('touchstart', startGateVideo, { passive: true });
     }
 
     function revealMainContent() {
@@ -62,36 +74,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startAutoScroll() {
-        const scrollSpeed = 2; // سرعة النزول
-        
-        const autoScrollInterval = setInterval(() => {
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            const totalHeight = Math.max(
-                document.body.scrollHeight,
-                document.documentElement.scrollHeight
-            );
-            const maxScroll = totalHeight - window.innerHeight;
+        setTimeout(() => {
+            let isStopped = false;
 
-            if (currentScroll >= maxScroll - 10) {
-                clearInterval(autoScrollInterval);
-            } else {
-                window.scrollBy({
-                    top: scrollSpeed,
-                    behavior: 'smooth'
-                });
+            function step() {
+                if (isStopped) return;
+
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const totalHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight,
+                    document.body.offsetHeight,
+                    document.documentElement.offsetHeight
+                );
+                const maxScroll = totalHeight - window.innerHeight;
+
+                if (currentScroll >= maxScroll - 5) {
+                    isStopped = true;
+                    return;
+                }
+
+                window.scrollBy(0, 1.2);
+                requestAnimationFrame(step);
             }
-        }, 30);
 
-        // إيقاف السكرول عند تفاعل المستخدم بلمس الشاشة أو الماوس
-        const stopScroll = () => clearInterval(autoScrollInterval);
-        window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
-        window.addEventListener('wheel', stopScroll, { passive: true, once: true });
-    }
+            requestAnimationFrame(step);
 
-    // ربط الضغطة بالبوابة
-    if (videoGate) {
-        videoGate.addEventListener('click', startGateVideo);
-        videoGate.addEventListener('touchstart', startGateVideo);
+            const stopScroll = () => { isStopped = true; };
+            window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
+            window.addEventListener('wheel', stopScroll, { passive: true, once: true });
+        }, 300);
     }
 
     // 3. TYPEWRITER LOGIC
