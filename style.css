@@ -713,3 +713,7 @@ section {
   font-size: 1.3rem;
   margin: 10px 0;
 }
+.typewriter-text, .wedding-card {
+    direction: rtl;
+    text-align: center;
+}
