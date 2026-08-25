@@ -78,14 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function typeCharacter(element, text, i) {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            setTimeout(() => typeCharacter(element, text, i + 1), 50);
-        } else {
-            element.classList.add('finished');
-        }
+  function typeCharacter(element, text, i) {
+    if (i <= text.length) {
+        // قطع النص كاملاً حتى الحرف الحالي بيخلي المتصفح يربط الحروف صح
+        element.textContent = text.slice(0, i);
+        setTimeout(() => typeCharacter(element, text, i + 1), 60);
+    } else {
+        element.classList.add('finished');
     }
+}
 });
 
 // 4. COUNTDOWN TIMER LOGIC
