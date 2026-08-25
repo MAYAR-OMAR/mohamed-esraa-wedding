@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isStarted = false;
 
-    // 1. عند الضغط: تشغيل الصوت والفيديو الأول (بدون إخفاء البوابة)
+    // 1. عند الضغط: تشغيل الصوت والفيديو الأول
     function startGateVideo() {
         if (isStarted) return;
         isStarted = true;
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (gateVideo) {
             gateVideo.play().catch(err => {
                 console.log('Gate video play error:', err);
-                // لو الفيديو فيه مشكلة في التشغيل، افتح الموقع مباشرة
                 revealMainContent();
             });
         } else {
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 2. لما الفيديو الأول يخلص تماماً -> افتح الصفحة الرئيسية وفك السكرول
+    // 2. لما الفيديو الأول يخلص تماماً -> افتح الصفحة الرئيسية
     if (gateVideo) {
         gateVideo.addEventListener('ended', revealMainContent);
     }
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mainContent.classList.remove('hidden');
         }
 
-        // تفعيل السكرول بعد انتهاء فيديو البوابة
+        // تفعيل السكرول
         document.body.style.overflow = 'auto';
 
         if (secondVideo) {
@@ -54,6 +53,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // تشغيل انيميشن الكتابة
         startTypewriter();
+
+        // 🚀 بدء السكرول التلقائي بعد 2 ثانية
+        setTimeout(() => {
+            startAutoScroll();
+        }, 2000);
+    }
+
+    // دالة السكرول التلقائي الناعم
+    function startAutoScroll() {
+        const scrollSpeed = 1.5; // سرعة الحركة
+        const scrollDelay = 15;  // زمن التحديث بالمللي ثانية
+
+        const autoScrollInterval = setInterval(() => {
+            // التوقف عند الوصول لأسفل الصفحة
+            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) {
+                clearInterval(autoScrollInterval);
+            } else {
+                window.scrollBy(0, scrollSpeed);
+            }
+        }, scrollDelay);
+
+        // إلغاء السكرول التلقائي فور تفاعل المستخدم برمس أو بالماوس
+        window.addEventListener('wheel', () => clearInterval(autoScrollInterval), { once: true });
+        window.addEventListener('touchstart', () => clearInterval(autoScrollInterval), { once: true });
     }
 
     // ربط الضغطة بالبوابة
@@ -78,18 +101,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-  function typeCharacter(element, text, i) {
-    if (i <= text.length) {
-        element.textContent = text.slice(0, i); // 👈 بياخد النص من الأول لحد الحرف الحالي
-        setTimeout(() => typeCharacter(element, text, i + 1), 50);
-    } else {
-        element.classList.add('finished');
+    function typeCharacter(element, text, i) {
+        if (i <= text.length) {
+            element.textContent = text.slice(0, i);
+            setTimeout(() => typeCharacter(element, text, i + 1), 50);
+        } else {
+            element.classList.add('finished');
+        }
     }
-}
 });
 
 // 4. COUNTDOWN TIMER LOGIC
-const targetDate = new Date('septemper 12, 2026 00:00:00').getTime();
+const targetDate = new Date('September 12, 2026 00:00:00').getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -120,6 +143,3 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-
-
-
