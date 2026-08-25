@@ -75,47 +75,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 function startAutoScroll() {
-    let isStopped = false;
-    let scrollSpeed = 1.5;
-    let scrollAnimation;
+    let stopped = false;
+    let animationId;
 
-    function autoScroll() {
-        if (isStopped) return;
+    function scrollStep() {
+        if (stopped) return;
 
-        const scrollTop = window.scrollY || window.pageYOffset;
+        const currentScroll = window.scrollY;
         const maxScroll =
             document.documentElement.scrollHeight - window.innerHeight;
 
-        if (scrollTop >= maxScroll - 2) {
-            isStopped = true;
+        if (currentScroll >= maxScroll - 2) {
+            stopped = true;
             return;
         }
 
-        window.scrollTo({
-            top: scrollTop + scrollSpeed,
-            behavior: 'auto'
-        });
+        window.scrollTo(0, currentScroll + 1.5);
 
-        scrollAnimation = requestAnimationFrame(autoScroll);
+        animationId = requestAnimationFrame(scrollStep);
     }
 
-    // نبدأ بعد ما الصفحة تظهر فعلاً
+    // ندي الموبايل فرصة يرسم الصفحة بالكامل
     setTimeout(() => {
-        autoScroll();
+        requestAnimationFrame(() => {
+            scrollStep();
+        });
     }, 1000);
 
-    // لو المستخدم لمس الشاشة بعد بداية الـauto scroll
-    const stopByTouch = () => {
-        isStopped = true;
-        cancelAnimationFrame(scrollAnimation);
-    };
+    function stopScroll() {
+        stopped = true;
+        cancelAnimationFrame(animationId);
+    }
 
-    window.addEventListener('touchstart', stopByTouch, {
+    window.addEventListener('touchstart', stopScroll, {
         passive: true,
         once: true
     });
 
-    window.addEventListener('wheel', stopByTouch, {
+    window.addEventListener('wheel', stopScroll, {
         passive: true,
         once: true
     });
