@@ -73,10 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
 
-   function startAutoScroll() {
+function startAutoScroll() {
+    // 1. انتظر لما أنيميشن البوابة يخلص تماماً والشاشة تتفتح
     setTimeout(() => {
         let isStopped = false;
 
+        // دالة السكرول المستمر
         function step() {
             if (isStopped) return;
 
@@ -89,27 +91,35 @@ document.addEventListener('DOMContentLoaded', function() {
             );
             const maxScroll = totalHeight - window.innerHeight;
 
+            // لو وصل لآخر الصفحة يوقف
             if (currentScroll >= maxScroll - 10) {
                 isStopped = true;
                 return;
             }
 
-            // زيادة الخطوة لـ 2.5 لتناسب شاشات الموبايل اللمسية
-            window.scrollBy(0, 2.5);
+            // حركة بمقدار 2px مناسبة جداً للموبايل
+            window.scrollBy(0, 2);
 
             requestAnimationFrame(step);
         }
 
+        // ابدأ السكرول البرمجي
         requestAnimationFrame(step);
 
-        // تأخير إضافة المستمع لتجنب إيقافه التلقائي فور فتح البوابة
-        setTimeout(() => {
-            const stopScroll = () => { isStopped = true; };
-            window.addEventListener('touchstart', stopScroll, { passive: true, once: true });
-            window.addEventListener('wheel', stopScroll, { passive: true, once: true });
-        }, 1000); // ينتظر ثانية كاملة قبل ما يسمح للمس بوقف السكرول
+        // 2. تجميع كل الأحداث اللي بتوقف السكرول
+        const stopScroll = () => {
+            isStopped = true;
+        };
 
-    }, 500);
+        // 3. مهم جداً: استنّى ثانية كاملة بعد ما السكرول يبدأ عشان تفتح مجال للمس القديم يختفي
+        setTimeout(() => {
+            // هنسمع للـ Touch والـ Scroll المباشر فقط بعد حماية 1000ms
+            window.addEventListener('touchstart', stopScroll, { passive: true, once: true });
+            window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
+            window.addEventListener('wheel', stopScroll, { passive: true, once: true });
+        }, 1200);
+
+    }, 600); // وقت إضافي يضمن إن النقرة الأولى اختفت تماماً
 }
     // 3. TYPEWRITER LOGIC
     function startTypewriter() {
