@@ -504,3 +504,15 @@ html, body {
                 url('../assets/bg-pillars.jpg') center/cover no-repeat fixed;
     box-sizing: border-box;
 }
+/* SECTION 4: QURAN & WELCOME */
+.quran-section {
+    width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* شيلنا fixed واستبدلناها بـ scroll عشان تظبط على الموبايل */
+    background: url('./photo1.png') center/cover no-repeat scroll;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}

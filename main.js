@@ -73,39 +73,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
 
-    function startAutoScroll() {
-        setTimeout(() => {
-            let isStopped = false;
+   function startAutoScroll() {
+    setTimeout(() => {
+        let isStopped = false;
 
-            function step() {
-                if (isStopped) return;
+        function step() {
+            if (isStopped) return;
 
-                const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-                const totalHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.documentElement.scrollHeight,
-                    document.body.offsetHeight,
-                    document.documentElement.offsetHeight
-                );
-                const maxScroll = totalHeight - window.innerHeight;
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const totalHeight = Math.max(
+                document.body.scrollHeight,
+                document.documentElement.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.offsetHeight
+            );
+            const maxScroll = totalHeight - window.innerHeight;
 
-                if (currentScroll >= maxScroll - 5) {
-                    isStopped = true;
-                    return;
-                }
-
-                window.scrollBy(0, 1.2);
-                requestAnimationFrame(step);
+            if (currentScroll >= maxScroll - 10) {
+                isStopped = true;
+                return;
             }
 
+            // زيادة الخطوة لـ 2.5 لتناسب شاشات الموبايل اللمسية
+            window.scrollBy(0, 2.5);
+
             requestAnimationFrame(step);
+        }
 
+        requestAnimationFrame(step);
+
+        // تأخير إضافة المستمع لتجنب إيقافه التلقائي فور فتح البوابة
+        setTimeout(() => {
             const stopScroll = () => { isStopped = true; };
-            window.addEventListener('touchmove', stopScroll, { passive: true, once: true });
+            window.addEventListener('touchstart', stopScroll, { passive: true, once: true });
             window.addEventListener('wheel', stopScroll, { passive: true, once: true });
-        }, 300);
-    }
+        }, 1000); // ينتظر ثانية كاملة قبل ما يسمح للمس بوقف السكرول
 
+    }, 500);
+}
     // 3. TYPEWRITER LOGIC
     function startTypewriter() {
         const elements = document.querySelectorAll('.typewriter-text');
