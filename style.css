@@ -498,9 +498,9 @@ body {
   -webkit-transform: translateZ(0);
 }
 html, body {
-  min-height: 100dvh;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+    min-height: 100dvh;
+    /* مسحنا transform: translateZ(0) تماماً عشان تسمح بالـ Auto-scroll */
+    -webkit-overflow-scrolling: touch;
 }
 /* 1. تغيير خلفية الموقع الأساسية للون كريمي/أوف وايت أنيق يناسب الدعوة بدل الأسود */
 html, body {
