@@ -175,24 +175,30 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-
-
 const openBtn = document.getElementById('open-gate-btn');
 const gateContainer = document.getElementById('video-gate-container');
 const gateVideo = document.getElementById('gate-video');
+const bgMusic = document.getElementById('bg-music');
 
 openBtn.addEventListener('click', (e) => {
     e.stopPropagation();
 
-    // 1. إخفاء الزرار فوراً أول ما يدوس
+    // 1. إخفاء الزرار فوراً
     openBtn.style.display = 'none';
 
-    // 2. تشغيل الفيديو
+    // 2. تشغيل الأغنية بدءاً من الدقيقة 1:10 (70 ثانية)
+    if (bgMusic) {
+        bgMusic.currentTime = 70; // 1 min * 60 sec + 10 sec = 70 seconds
+        bgMusic.play().catch(error => {
+            console.log("Audio play failed:", error);
+        });
+    }
+
+    // 3. تشغيل فيديو البوابة
     if (gateVideo) {
-        gateVideo.currentTime = 0; // يبدأ من الأول
+        gateVideo.currentTime = 0;
         gateVideo.play();
 
-        // 3. لما الفيديو يخلص تماماً، نخفي البوابة ونبدأ السكرول
         gateVideo.onended = () => {
             gateContainer.classList.add('hidden');
 
