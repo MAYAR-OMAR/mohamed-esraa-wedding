@@ -6,13 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainContent = document.getElementById('main-content');
     const secondVideo = document.getElementById('second-video');
     const bgMusic = document.getElementById('bg-music');
+    const openBtn = document.getElementById('open-gate-btn');
 
     let isStarted = false;
 
-    // 1. عند الضغط: تشغيل الصوت والفيديو الأول
-    function startGateVideo() {
+    // دالة بدء الدعوة وتشغيل الصوت والفيديو
+    function startInvitation(e) {
         if (isStarted) return;
         isStarted = true;
+
+        if (openBtn) {
+            openBtn.style.display = 'none';
+        }
 
         if (bgMusic) {
             bgMusic.currentTime = 70;
@@ -20,12 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (gateVideo) {
+            gateVideo.currentTime = 0;
             let playPromise = gateVideo.play();
 
             if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // الفيديو شغال تمام
-                }).catch(err => {
+                playPromise.catch(err => {
                     console.log('Gate video blocked, skipping directly:', err);
                     revealMainContent();
                 });
@@ -35,15 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 2. لما الفيديو الأول يخلص تماماً -> افتح الصفحة الرئيسية
-    if (gateVideo) {
-        gateVideo.addEventListener('ended', revealMainContent);
+    // ربط زرار الفتح والـ container
+    if (openBtn) {
+        openBtn.addEventListener('click', startInvitation);
+    }
+    if (videoGate) {
+        videoGate.addEventListener('click', startInvitation);
     }
 
-    // 📌 ربط الكليك والـ Touch على container البوابة (ده اللي كان ناقص بردو)
-    if (videoGate) {
-        videoGate.addEventListener('click', startGateVideo);
-       
+    // لما الفيديو الأول يخلص
+    if (gateVideo) {
+        gateVideo.addEventListener('ended', revealMainContent);
     }
 
     function revealMainContent() {
@@ -56,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mainContent.classList.remove('hidden');
         }
 
-        // فك الـ Overflow للشاشة
         document.documentElement.style.overflow = 'auto';
         document.body.style.overflow = 'auto';
 
@@ -64,60 +69,50 @@ document.addEventListener('DOMContentLoaded', function() {
             secondVideo.play().catch(err => console.log('Second video error:', err));
         }
 
-        // تشغيل انيميشن الكتابة
         startTypewriter();
 
-       setTimeout(() => {
-    requestAnimationFrame(() => {
-        startAutoScroll();
-    });
-}, 500);
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                startAutoScroll();
+            });
+        }, 500);
     }
 
-function startAutoScroll() {
-    let stopped = false;
-    let animationId;
+    function startAutoScroll() {
+        let stopped = false;
+        let animationId;
 
-    function scrollStep() {
-        if (stopped) return;
+        function scrollStep() {
+            if (stopped) return;
 
-        const currentScroll = window.scrollY;
-        const maxScroll =
-            document.documentElement.scrollHeight - window.innerHeight;
+            const currentScroll = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-        if (currentScroll >= maxScroll - 2) {
-            stopped = true;
-            return;
+            if (currentScroll >= maxScroll - 2) {
+                stopped = true;
+                return;
+            }
+
+            window.scrollTo(0, currentScroll + 1.5);
+            animationId = requestAnimationFrame(scrollStep);
         }
 
-        window.scrollTo(0, currentScroll + 1.5);
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                scrollStep();
+            });
+        }, 1000);
 
-        animationId = requestAnimationFrame(scrollStep);
+        function stopScroll() {
+            stopped = true;
+            cancelAnimationFrame(animationId);
+        }
+
+        window.addEventListener('touchstart', stopScroll, { passive: true, once: true });
+        window.addEventListener('wheel', stopScroll, { passive: true, once: true });
     }
 
-    // ندي الموبايل فرصة يرسم الصفحة بالكامل
-    setTimeout(() => {
-        requestAnimationFrame(() => {
-            scrollStep();
-        });
-    }, 1000);
-
-    function stopScroll() {
-        stopped = true;
-        cancelAnimationFrame(animationId);
-    }
-
-    window.addEventListener('touchstart', stopScroll, {
-        passive: true,
-        once: true
-    });
-
-    window.addEventListener('wheel', stopScroll, {
-        passive: true,
-        once: true
-    });
-}
-    // 3. TYPEWRITER LOGIC
+    // Typewriter Effect
     function startTypewriter() {
         const elements = document.querySelectorAll('.typewriter-text');
         
@@ -143,7 +138,7 @@ function startAutoScroll() {
     }
 });
 
-// 4. COUNTDOWN TIMER LOGIC
+// Countdown Timer Logic
 const targetDate = new Date('September 12, 2026 00:00:00').getTime();
 
 function updateCountdown() {
@@ -175,36 +170,3 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-const openBtn = document.getElementById('open-gate-btn');
-const gateContainer = document.getElementById('video-gate-container');
-const gateVideo = document.getElementById('gate-video');
-const bgMusic = document.getElementById('bg-music');
-
-openBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-
-    // 1. إخفاء الزرار فوراً
-    openBtn.style.display = 'none';
-
-    // 2. تشغيل الأغنية بدءاً من الدقيقة 1:10 (70 ثانية)
-    if (bgMusic) {
-        bgMusic.currentTime = 70; // 1 min * 60 sec + 10 sec = 70 seconds
-        bgMusic.play().catch(error => {
-            console.log("Audio play failed:", error);
-        });
-    }
-
-    // 3. تشغيل فيديو البوابة
-    if (gateVideo) {
-        gateVideo.currentTime = 0;
-        gateVideo.play();
-
-        gateVideo.onended = () => {
-            gateContainer.classList.add('hidden');
-
-            if (typeof startAutoScroll === 'function') {
-                startAutoScroll();
-            }
-        };
-    }
-});
